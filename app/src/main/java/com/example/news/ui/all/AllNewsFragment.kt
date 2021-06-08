@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.news.databinding.FragmentAllBinding
-import com.example.news.service.Request
 
 class AllNewsFragment : Fragment() {
 
@@ -26,11 +25,7 @@ class AllNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener(View.OnClickListener {
-            Request.getNews{
-                System.out.println("Deneme")
-                System.out.println("Deneme")
 
-            }
         })
     }
 

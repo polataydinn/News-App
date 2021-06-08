@@ -6,4 +6,5 @@
     <string name="favorites">Favorites</string>
     <string name="all">All</string>
     <string name="breaking">Breaking</string>
+    <string name="loadingText">Loading...</string>
 </resources>

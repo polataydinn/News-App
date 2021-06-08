@@ -2,6 +2,7 @@ package com.example.news.service
 
 import com.google.gson.annotations.SerializedName
 
+
 data class Result(
     @SerializedName("articles")
     val articles: List<Article>?,

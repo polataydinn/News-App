@@ -3,10 +3,10 @@ package com.example.news.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.news.data.Article
 import com.example.news.databinding.NewsItemBinding
-import com.example.news.service.Result
 
-class NewsAdapter(newsList: List<Result.Article>) : RecyclerView.Adapter<NewsViewHolder>() {
+class NewsAdapter(newsList: List<Article>) : RecyclerView.Adapter<NewsViewHolder>() {
 
     private var mNewsList = newsList
 

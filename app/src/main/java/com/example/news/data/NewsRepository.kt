@@ -4,11 +4,11 @@ import com.example.news.model.Article
 
 class NewsRepository {
 
-    private val newsDao  by lazy {
+    private val newsDao by lazy {
         NewsDatabase.getDatabase()?.newsDao()
     }
-    //val readAllNews: LiveData<List<Result.Article>> = newsDao?.readAllNews()!!
 
+    suspend fun readAllNews(): List<Article>? = newsDao?.getAllColumns()
 
     suspend fun addNewsToDB(article: Article) {
         newsDao?.addNews(article)

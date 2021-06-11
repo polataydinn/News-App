@@ -1,7 +1,8 @@
-package com.example.news.data
+package com.example.news.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.news.model.Source
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "Article")
@@ -9,19 +10,19 @@ data class Article(
     @PrimaryKey(autoGenerate = true)
     val _id: Int,
     @SerializedName("author")
-    val author: String,
+    val author: String?,
     @SerializedName("content")
-    val content: String,
+    val content: String?,
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("publishedAt")
-    val publishedAt: String,
+    val publishedAt: String?,
     @SerializedName("source")
-    val source: Source,
+    val source: Source?,
     @SerializedName("title")
-    val title: String,
+    val title: String?,
     @SerializedName("url")
-    val url: String,
+    val url: String?,
     @SerializedName("urlToImage")
-    val urlToImage: String
+    val urlToImage: String?
 )

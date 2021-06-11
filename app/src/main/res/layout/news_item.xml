@@ -31,15 +31,11 @@
             android:textColor="@color/white"
             android:textSize="17dp" />
 
-        <com.borjabravo.readmoretextview.ReadMoreTextView
+        <TextView
             android:id="@+id/newsDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:trimExpandedText="Show more..."
-            app:trimCollapsedText="Show less"
-            app:trimMode="trimModeLength"
-            app:trimLength="50"
             android:layout_marginHorizontal="25dp"
             android:layout_marginBottom="25dp"
             android:text="Description is here"

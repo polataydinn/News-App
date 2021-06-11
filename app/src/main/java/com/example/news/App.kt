@@ -6,6 +6,6 @@ import com.example.news.data.NewsDatabase
 class App:Application() {
     override fun onCreate() {
         super.onCreate()
-        NewsDatabase.initDatabase(applicationContext)
+        NewsDatabase.initializeDatabase(applicationContext)
     }
 }

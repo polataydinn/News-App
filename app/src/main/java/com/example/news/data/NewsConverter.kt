@@ -1,6 +1,7 @@
 package com.example.news.data
 
 import androidx.room.TypeConverter
+import com.example.news.model.Source
 
 class NewsConverter {
     @TypeConverter

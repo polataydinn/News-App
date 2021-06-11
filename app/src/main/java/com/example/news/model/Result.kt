@@ -1,6 +1,6 @@
-package com.example.news.service
+package com.example.news.model
 
-import com.example.news.data.Article
+import com.example.news.model.Article
 import com.google.gson.annotations.SerializedName
 
 

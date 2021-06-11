@@ -3,7 +3,7 @@ package com.example.news.ui.breaking
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.news.data.Article
+import com.example.news.model.Article
 import com.example.news.data.NewsRepository
 import com.example.news.service.Request
 import kotlinx.coroutines.launch
@@ -28,11 +28,11 @@ class BreakingViewModel : ViewModel() {
             isLoading.value = false
             breakingNewsList.forEach {
                 viewModelScope.launch {
-                    insert(it)
+                    insertToDB(it)
                 }
             }
         }
     }
 
-    suspend fun insert(article :Article) = repository.addNewsToDB(article)
+    suspend fun insertToDB(article : Article) = repository.addNewsToDB(article)
 }

@@ -1,5 +1,7 @@
 package com.example.news.data
 
+import com.example.news.model.Article
+
 class NewsRepository {
 
     private val newsDao  by lazy {

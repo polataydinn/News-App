@@ -19,6 +19,7 @@ class BreakingViewModel : ViewModel() {
     private val repository = NewsRepository()
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var isRequested = false
     var currentData: List<Article>? = null
@@ -50,16 +51,15 @@ class BreakingViewModel : ViewModel() {
     }
 
     fun refreshTheNews() {
-        Handler(Looper.getMainLooper()).postDelayed({
+        isRefreshing.value = true
             Request.getNews { breakingNewsList ->
-                isLoading.value = false
+                isRefreshing.value = false
                 viewModelScope.launch {
                     breakingNewsList.forEach {
                         insertToDB(it)
                     }
                 }
             }
-        }, 5000)
     }
 
     suspend fun insertToDB(article: Article) = repository.addNewsToDB(article)

@@ -38,10 +38,13 @@ class BreakingFragment : Fragment() {
             if (it) loadingScreen.startLoadingScreen()
             else loadingScreen.dismissLoadingScreen()
         }
+        viewModel.refreshTheNews()
         viewModel.getBreakingNews()
         viewModel.news.observe(viewLifecycleOwner){breakingNewsList ->
             recyclerView?.adapter = NewsAdapter(breakingNewsList)
         }
+
+
     }
 
 

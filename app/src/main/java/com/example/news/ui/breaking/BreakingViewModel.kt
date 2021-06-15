@@ -1,6 +1,7 @@
 package com.example.news.ui.breaking
 
-import androidx.lifecycle.LiveData
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,27 +21,45 @@ class BreakingViewModel : ViewModel() {
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var isRequested = false
-    var currentData : List<Article>? = null
+    var currentData: List<Article>? = null
 
     fun getBreakingNews() {
         if (isRequested) return else isRequested = true
         isLoading.value = true
-        Request.getNews { breakingNewsList ->
-            news.value = breakingNewsList
-            isLoading.value = false
-            breakingNewsList.forEach {
-                viewModelScope.launch {
-                    currentData = readAllData()
-                    currentData?.forEach {current->
-                        if (current.description == it.description){
 
-                        }else
-
-                            insertToDB(it)
+        viewModelScope.launch {
+            currentData = readAllData()
+            if (currentData?.size != 0) {
+                isLoading.value = false
+                news.value = currentData
+            } else {
+                Request.getNews { breakingNewsList ->
+                    isLoading.value = false
+                    breakingNewsList.forEach {
+                        viewModelScope.launch {
+                            breakingNewsList.forEach({
+                                insertToDB(it)
+                            })
+                            currentData = readAllData()
+                            news.value = currentData
+                        }
                     }
                 }
             }
         }
+    }
+
+    fun refreshTheNews() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            Request.getNews { breakingNewsList ->
+                isLoading.value = false
+                viewModelScope.launch {
+                    breakingNewsList.forEach {
+                        insertToDB(it)
+                    }
+                }
+            }
+        }, 5000)
     }
 
     suspend fun insertToDB(article: Article) = repository.addNewsToDB(article)

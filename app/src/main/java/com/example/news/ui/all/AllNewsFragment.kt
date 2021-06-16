@@ -13,7 +13,6 @@ class AllNewsFragment : Fragment() {
 
     private var _binding: FragmentAllBinding? = null
     private val binding get() = _binding!!
-    private val repository =  NewsRepository()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -1,16 +1,22 @@
 package com.example.news.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.news.model.Article
 
-class NewsRepository {
+object NewsRepository {
 
     private val newsDao by lazy {
         NewsDatabase.getDatabase()?.newsDao()
     }
 
-    suspend fun readAllNews(): List<Article>? = newsDao?.getAllColumns()
+    fun readAllNews() = newsDao?.getAllColumns()
 
     suspend fun addNewsToDB(article: Article) {
         newsDao?.addNews(article)
+    }
+
+    suspend fun updateAricle(article: Article) {
+        newsDao?.updateArticle(article)
     }
 }

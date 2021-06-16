@@ -1,29 +1,29 @@
 package com.example.news.ui.breaking
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.news.R
 import com.example.news.adapter.NewsAdapter
 import com.example.news.databinding.FragmentBreakingBinding
-import com.example.news.ui.loading.LoadingScreen
 
 class BreakingFragment : Fragment() {
 
-    var recyclerView: RecyclerView? = null
-
     private var _binding: FragmentBreakingBinding? = null
     private val binding get() = _binding!!
-    private var _isRefreshing : Boolean? = null
-
     private lateinit var viewModel: BreakingViewModel
+    private lateinit var adapter: NewsAdapter
+    var dialog: AlertDialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentBreakingBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -31,33 +31,46 @@ class BreakingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = binding.breakingNewsList
-        recyclerView?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+
         viewModel = ViewModelProvider(this).get(BreakingViewModel::class.java)
 
-        val loadingScreen = LoadingScreen(activity)
-
-        viewModel.isLoading.observe(viewLifecycleOwner){
-            if (it) loadingScreen.startLoadingScreen()
-            else loadingScreen.dismissLoadingScreen()
+        adapter = NewsAdapter { position ->
+            val currentNews = adapter.currentList[position]
+            val result = currentNews.copy(isFavorite = !currentNews.isFavorite)
+            viewModel.updateFavorite(result)
         }
 
-
-
-        viewModel.refreshTheNews()
-        viewModel.getBreakingNews()
-        viewModel.news.observe(viewLifecycleOwner){breakingNewsList ->
-            recyclerView?.adapter = NewsAdapter(breakingNewsList)
-        }
-
-        binding.swipeToRefresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-            viewModel.refreshTheNews()
-            viewModel.isRefreshing.observe(viewLifecycleOwner){
-                    binding.swipeToRefresh.isRefreshing = it
+        binding.breakingNewsList.adapter = adapter
+        viewModel.apply {
+            isLoading.observe(viewLifecycleOwner) {
+                if (it) startLoadingScreen() else dismissLoadingScreen()
             }
-        })
+            getBreakingNews()
+            news?.observe(viewLifecycleOwner) { breakingNewsList ->
+                adapter.submitList(breakingNewsList)
+            }
+            isRefreshing.observe(viewLifecycleOwner) {
+                binding.swipeToRefresh.isRefreshing = it
+            }
+
+
+        }
+        binding.swipeToRefresh.setOnRefreshListener {
+            viewModel.getBreakingNews()
+        }
     }
 
+    private fun startLoadingScreen() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setView(layoutInflater.inflate(R.layout.loading_screen, null))
+        builder.setCancelable(true)
+        dialog = builder.create()
+        dialog?.show()
+    }
+
+    private fun dismissLoadingScreen() {
+        dialog?.dismiss()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1,7 +1,5 @@
 package com.example.news.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.news.model.Article
 
 object NewsRepository {

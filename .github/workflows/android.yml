@@ -41,30 +41,5 @@ jobs:
           name: apk
           path: app/build/outputs/apk/debug/app-debug.apk 
           
-  release:
-    name: Create Release
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set release name
-        run: echo ::set-env name=RELEASE_NAME::$(echo ${GITHUB_REF:1})
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ env.RELEASE_NAME }}
-          body: |
-            What is new :
-              - First Change
-              - Second Change
-          draft: false
-          prerelease: false
           
-          
+      

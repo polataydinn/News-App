@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.news.adapter.NewsAdapter
 import com.example.news.databinding.FragmentFavoritesBinding
-import com.example.news.model.Article
+import com.example.news.model.TempNews
 import com.example.news.ui.breaking.BreakingViewModel
 
 class FavoritesFragment : Fragment() {
@@ -17,8 +18,6 @@ class FavoritesFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: NewsAdapter
     private lateinit var viewModel: BreakingViewModel
-    private val favoriteTempList = arrayListOf<Article>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,9 +32,17 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(BreakingViewModel::class.java)
-        adapter = NewsAdapter {
-            val currentNews = adapter.currentList[it]
-              viewModel.updateFavorite(currentNews.copy(isFavorite = !currentNews.isFavorite))
+        adapter = NewsAdapter {position, isHeart ->
+            val currentNews = adapter.currentList[position]
+
+            if (isHeart){
+                viewModel.updateFavorite(currentNews.copy(isFavorite = !currentNews.isFavorite))
+            }else{
+                val tempNews = TempNews(currentNews.title,currentNews.content,currentNews.urlToImage)
+                val redirect = FavoritesFragmentDirections.actionNavigationNotificationsToShowNewsFragment(tempNews)
+                Navigation.findNavController(view).navigate(redirect)
+            }
+
         }
 
         viewModel.apply {

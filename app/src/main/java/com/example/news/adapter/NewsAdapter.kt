@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.news.databinding.NewsItemBinding
 import com.example.news.model.Article
 
-class NewsAdapter(val onItemClickListener: (Int) -> Unit) :
+class NewsAdapter(val onItemClickListener: (Int, Boolean) -> Unit) :
     ListAdapter<Article, NewsViewHolder>(DiffCallback()) {
 
 

@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.news.R
 import com.example.news.adapter.NewsAdapter
 import com.example.news.databinding.FragmentBreakingBinding
+import com.example.news.model.TempNews
 
 class BreakingFragment : Fragment() {
 
@@ -34,10 +36,16 @@ class BreakingFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(BreakingViewModel::class.java)
 
-        adapter = NewsAdapter { position ->
+        adapter = NewsAdapter { position, isHeart ->
             val currentNews = adapter.currentList[position]
-            val result = currentNews.copy(isFavorite = !currentNews.isFavorite)
-            viewModel.updateFavorite(result)
+            if (isHeart) {
+                val result = currentNews.copy(isFavorite = !currentNews.isFavorite)
+                viewModel.updateFavorite(result)
+            } else {
+                val tempNews = TempNews(currentNews.title,currentNews.content,currentNews.urlToImage)
+                val redirect = BreakingFragmentDirections.actionNavigationHomeToShowNewsFragment(tempNews)
+                Navigation.findNavController(view).navigate(redirect)
+            }
         }
 
         binding.breakingNewsList.adapter = adapter

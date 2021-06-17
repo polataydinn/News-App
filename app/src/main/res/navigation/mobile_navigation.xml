@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.news.ui.breaking.BreakingFragment"
         android:label="Breaking"
-        tools:layout="@layout/fragment_breaking" />
+        tools:layout="@layout/fragment_breaking" >
+        <action
+            android:id="@+id/action_navigation_home_to_showNewsFragment"
+            app:destination="@id/showNewsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -21,5 +25,18 @@
         android:id="@+id/navigation_notifications"
         android:name="com.example.news.ui.favorites.FavoritesFragment"
         android:label="Favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_navigation_notifications_to_showNewsFragment"
+            app:destination="@id/showNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showNewsFragment"
+        android:name="com.example.news.ui.ShowNewsFragment"
+        android:label="fragment_show_news"
+        tools:layout="@layout/fragment_show_news" >
+        <argument
+            android:name="currentArticle"
+            app:argType="com.example.news.model.TempNews" />
+    </fragment>
 </navigation>

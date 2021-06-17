@@ -7,4 +7,6 @@
     <string name="all">All</string>
     <string name="breaking">Breaking</string>
     <string name="loadingText">Loading...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

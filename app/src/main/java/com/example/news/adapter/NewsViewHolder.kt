@@ -30,12 +30,10 @@ class NewsViewHolder(private val binding: NewsItemBinding) :
             onItemClickListener(adapterPosition)
         }
 
-        if (isFavorite) {
-            if (item.isFavorite) {
-                binding.heartImage.setImageResource(R.drawable.ic_baseline_favorite_24)
-            } else {
-                binding.heartImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
+        if (item.isFavorite) {
+            binding.heartImage.setImageResource(R.drawable.ic_baseline_favorite_24)
+        } else {
+            binding.heartImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
         }
     }
 

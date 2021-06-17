@@ -20,9 +20,18 @@ class BreakingViewModel : ViewModel() {
 
     fun getBreakingNews() {
         if (isRequested) return else isRequested = true
-        isLoading.value = true
+        sendRequest()
+    }
+
+    fun refresTheNews(){
+        isRefreshing.value = true
+        sendRequest()
+    }
+
+    fun sendRequest(){
         Request.getNews { breakingNewsList ->
             isLoading.value = false
+            isRefreshing.value = false
             viewModelScope.launch {
                 breakingNewsList.forEach {
                     insertToDB(it)

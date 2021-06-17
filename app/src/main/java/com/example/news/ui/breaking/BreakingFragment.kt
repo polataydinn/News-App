@@ -56,7 +56,7 @@ class BreakingFragment : Fragment() {
 
         }
         binding.swipeToRefresh.setOnRefreshListener {
-            viewModel.getBreakingNews()
+            viewModel.refresTheNews()
         }
     }
 

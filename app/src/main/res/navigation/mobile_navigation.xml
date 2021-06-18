@@ -19,7 +19,11 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.news.ui.all.AllNewsFragment"
         android:label="All News"
-        tools:layout="@layout/fragment_all" />
+        tools:layout="@layout/fragment_all" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_showNewsFragment"
+            app:destination="@id/showNewsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"

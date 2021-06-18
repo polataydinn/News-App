@@ -14,13 +14,7 @@ object Request {
             val call = retrofit.getNews()
             call.enqueue(object : Callback<Result> {
                 override fun onResponse(call: Call<Result>, response: Response<Result>) {
-                    Log.d("Dosya Çekim", "Başarılıı")
-                    val list = response.body()!!.articles
-
-                    if (list != null) {
-                        onResponse(list)
-                    }
-
+                    response.body()?.articles?.let(onResponse)
                 }
 
                 override fun onFailure(call: Call<Result>, t: Throwable) {

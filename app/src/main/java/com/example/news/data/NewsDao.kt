@@ -10,11 +10,14 @@ interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addNews(article: Article)
 
-    @Query("SELECT * FROM Article")
+    @Query("SELECT * FROM Article WHERE urlToImage IS NOT NULL")
     fun getAllColumns() : LiveData<List<Article>>
 
     @Query("SELECT * FROM Article WHERE isFavorite")
-    suspend fun getFavorites() : List<Article>
+    fun getFavorites() : LiveData<List<Article>>
+
+    @Query("SELECT * FROM Article order by publishedAt DESC LIMIT 10")
+    fun getLatestNews() : LiveData<List<Article>>
 
     @Update
     suspend fun updateArticle(article: Article)

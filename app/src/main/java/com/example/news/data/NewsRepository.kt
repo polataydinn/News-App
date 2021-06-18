@@ -10,6 +10,8 @@ object NewsRepository {
 
     fun readAllNews() = newsDao?.getAllColumns()
 
+    fun getLatestNews() = newsDao?.getLatestNews()
+
     suspend fun addNewsToDB(article: Article) {
         newsDao?.addNews(article)
     }
@@ -17,4 +19,7 @@ object NewsRepository {
     suspend fun updateAricle(article: Article) {
         newsDao?.updateArticle(article)
     }
+
+    fun getFavorites() = newsDao?.getFavorites()
+
 }

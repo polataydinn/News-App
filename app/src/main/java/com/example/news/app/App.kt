@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.news.app
 
 import android.app.Application
 import com.example.news.data.NewsDatabase

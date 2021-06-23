@@ -10,9 +10,8 @@ import retrofit2.Response
 
 object Request {
     fun getNews(onResponse: (List<Article>) -> Unit) {
-        Client.getRetrofit()?.let { retrofit ->
-            val call = retrofit.getNews()
-            call.enqueue(object : Callback<Result> {
+        Client.retrofit?.let { retrofit ->
+            Client.api.getAllNews().enqueue(object : Callback<Result> {
                 override fun onResponse(call: Call<Result>, response: Response<Result>) {
                     response.body()?.articles?.let(onResponse)
                 }
@@ -23,4 +22,6 @@ object Request {
             })
         }
     }
+
+    suspend fun getNews2(page: Int = 1, pageSize: Int = 20) = Client.api.getAllNews2(page,pageSize)
 }

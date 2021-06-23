@@ -17,10 +17,10 @@ class NewsViewHolder(private val binding: NewsItemBinding) :
             .diskCacheStrategy(DiskCacheStrategy.DATA).into(binding.newsImage)
 
         binding.heartImage.setOnClickListener {
-            onItemClickListener(adapterPosition, true)
+            onItemClickListener(bindingAdapterPosition, true)
         }
         binding.newsImage.setOnClickListener {
-            onItemClickListener(adapterPosition, false)
+            onItemClickListener(bindingAdapterPosition, false)
         }
 
         if (item.isFavorite) {
@@ -32,7 +32,7 @@ class NewsViewHolder(private val binding: NewsItemBinding) :
 
     fun bind(item: Article, onItemClickListener: (Int, Boolean) -> Unit, isFavorite: Boolean) {
         binding.heartImage.setOnClickListener {
-            onItemClickListener(adapterPosition, true)
+            onItemClickListener(bindingAdapterPosition, true)
         }
 
         if (item.isFavorite) {

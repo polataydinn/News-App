@@ -1,10 +1,15 @@
 package com.example.news.ui.all
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.news.data.NewsRepository
 import com.example.news.model.Article
+import com.example.news.pagination.PaginationSource
 import com.example.news.service.Request
 import kotlinx.coroutines.launch
 
@@ -22,6 +27,10 @@ class AllNewsViewModel : ViewModel() {
         if (isRequested) return else isRequested = true
         sendRequest()
     }
+
+    val listData = Pager(PagingConfig(pageSize = 5)) {
+        PaginationSource()
+    }.flow.cachedIn(viewModelScope)
 
     fun refresTheNews() {
         isRefreshing.value = true
@@ -51,5 +60,4 @@ class AllNewsViewModel : ViewModel() {
     private fun readAllData() = NewsRepository.readAllNews()
 
     suspend fun updateAricle(article: Article) = NewsRepository.updateAricle(article)
-
 }

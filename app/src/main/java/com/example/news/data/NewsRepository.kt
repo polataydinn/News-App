@@ -22,4 +22,5 @@ object NewsRepository {
 
     fun getFavorites() = newsDao?.getFavorites()
 
+
 }

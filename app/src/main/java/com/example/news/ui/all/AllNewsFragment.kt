@@ -7,18 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.news.R
-import com.example.news.adapter.NewsAdapter
+import com.example.news.adapter.NewsPaginationAdapter
 import com.example.news.databinding.FragmentAllBinding
 import com.example.news.model.TempNews
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class AllNewsFragment : Fragment() {
 
     private var _binding: FragmentAllBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: AllNewsViewModel
-    private lateinit var adapter: NewsAdapter
+    private lateinit var adapter: NewsPaginationAdapter
     var dialog: AlertDialog? = null
 
 
@@ -33,6 +37,7 @@ class AllNewsFragment : Fragment() {
         return root
     }
 
+    @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -43,9 +48,6 @@ class AllNewsFragment : Fragment() {
                 if (it) startLoadingScreen() else dismissLoadingScreen()
             }
             getBreakingNews()
-            news?.observe(viewLifecycleOwner) { allNewsList ->
-                adapter.submitList(allNewsList)
-            }
             isRefreshing.observe(viewLifecycleOwner) {
                 binding.swipeToRefresh.isRefreshing = it
             }
@@ -53,17 +55,27 @@ class AllNewsFragment : Fragment() {
 
         }
 
-        adapter = NewsAdapter { position, isHeart ->
-            val currentNews = adapter.currentList[position]
+        adapter = NewsPaginationAdapter { position, isHeart ->
+            val currentNews = adapter.snapshot()[position]
             if (isHeart) {
-                val result = currentNews.copy(isFavorite = !currentNews.isFavorite)
-                viewModel.updateFavorite(result)
+                val result = currentNews?.copy(isFavorite = !currentNews.isFavorite)
+                lifecycleScope.launch {
+                    if (result != null) {
+                        viewModel.insertToDB(result)
+                    }
+                }
             } else {
                 val tempNews =
-                    TempNews(currentNews.title, currentNews.content, currentNews.urlToImage)
+                    TempNews(currentNews!!.title, currentNews.content, currentNews.urlToImage)
                 val redirect =
                     AllNewsFragmentDirections.actionNavigationDashboardToShowNewsFragment(tempNews)
                 Navigation.findNavController(view).navigate(redirect)
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.listData.collect {
+                adapter.submitData(it)
             }
         }
 
